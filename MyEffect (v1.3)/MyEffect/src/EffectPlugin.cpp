@@ -91,7 +91,6 @@ void MyEffect::process(const float** inputBuffers, float** outputBuffers, int nu
     {
         filter[ch].set(fCutoff);
         filter[ch].getCutoff(getSampleRate());
-        secondOrderFilter[ch].set(fCutoff);
     }
 
 	for (int i = 0; i < numSamples; i++)
@@ -104,7 +103,6 @@ void MyEffect::process(const float** inputBuffers, float** outputBuffers, int nu
 			// Add your effect processing here#
 			float fWet = fIn[ch] * fInGain;
 			fWet = filter[ch].process(fWet); // shallow -6dB filter slope. Lets through significant frequency content above the cutoff.
-			fWet = secondOrderFilter[ch].process(fWet); // second order filter -12dB filter slope. Lets through less frequency content above the cutoff.
 
 			fOut[ch] = fWet * fOutGain;
 
