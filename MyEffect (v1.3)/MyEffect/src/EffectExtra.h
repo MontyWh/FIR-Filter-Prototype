@@ -13,7 +13,7 @@ public:
 	{
 		// Initialise your filter variables here
 		fCurrentACoeff = coeff;
-		fPreviousBCoeff = 1.0f - fCurrentACoeff;
+		fPreviousBCoeff = 1 - fCurrentACoeff;
 	}
 
 	float getCutoff(float sampleRate)
@@ -25,10 +25,10 @@ public:
 
 	float process(float input)
 	{
-		// Filter individual samples here - 𝑦0 = 𝑎𝑥0 + 𝑏𝑦-1
-		// Y is the output, X is the input, a is the fCurrentACoeff, b is the fPreviousBCoeff, and y-1 is the previous output sample
-		float fOutput = (input * fCurrentACoeff) + (fPreviousOutput * fPreviousBCoeff);
-		fPreviousOutput = fOutput;  // Store for next sample
+		// Filter individual samples here - 𝑦0 = 𝑎𝑥0 + ((1 − 𝑎) * 𝑥0-1)
+		// Y is the output, X is the input, a is the fCurrentACoeff, and x0-1 is the previous input sample
+		float fOutput = (input * fCurrentACoeff) + ((1.0f - fCurrentACoeff) * fPreviousInput);
+		fPreviousInput = input;  // Store for next sample
 		return fOutput;
 	}
 
@@ -37,5 +37,5 @@ private:
 
 	float fCurrentACoeff;
 	float fPreviousBCoeff = 0.0f;
-	float fPreviousOutput = 0.0f;  // Stores y-1
+	float fPreviousInput = 0.0f;   // Stores x-1
 };
